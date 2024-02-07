@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp").version("1.9.21-1.0.15")
+    kotlin("plugin.serialization") version "1.9.21"
 }
 
 android {
@@ -50,7 +52,6 @@ android {
 }
 
 
-
 dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -65,9 +66,15 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.18")
 
     val roomVersion = "2.6.1"
-
     implementation("androidx.room:room-runtime:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
+    val ktorVersion = "2.3.8"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 }

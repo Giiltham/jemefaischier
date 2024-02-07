@@ -14,15 +14,14 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/favoriteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_favorite"
-        android:contentDescription="test"
         android:layout_margin="16dp"
         android:clickable="true"
-    />
+        android:contentDescription="favorite button" />
 
 </RelativeLayout>

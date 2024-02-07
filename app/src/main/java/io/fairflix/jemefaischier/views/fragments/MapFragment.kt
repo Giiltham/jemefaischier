@@ -11,9 +11,18 @@ import androidx.fragment.app.Fragment
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import android.Manifest
-import io.fairflix.jemefaischier.R
+import android.net.Uri
+import io.fairflix.jemefaischier.api.OverpassApi
+import io.fairflix.jemefaischier.databinding.FragmentMapBinding
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import org.osmdroid.config.Configuration
-
+import org.osmdroid.util.GeoPoint
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.client.engine.cio.*
+import kotlinx.coroutines.runBlocking
 
 //private const val ARG_PARAM2 = "param2"
 
@@ -24,17 +33,24 @@ import org.osmdroid.config.Configuration
  */
 class MapFragment : Fragment() {
 
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var map : MapView
-    private lateinit var view : View
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        view =  inflater.inflate(R.layout.fragment_map, container, false)
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
+        map = binding.map
+        return binding.root
+    }
 
-        return view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +58,16 @@ class MapFragment : Fragment() {
 
         Configuration.getInstance().userAgentValue = "JeMeFaisChier"
 
+        requirePermissionsIfNecessary()
+
+        map.setTileSource(TileSourceFactory.MAPNIK)
+        map.controller.setZoom(15.0)
+        map.controller.setCenter(GeoPoint(45.763420, 4.834277))
+        map.minZoomLevel = (15.0)
+        map.maxZoomLevel = (21.0)
+    }
+
+    fun requirePermissionsIfNecessary(){
         val activity = requireActivity()
         val permissionCheckFine = ContextCompat.checkSelfPermission(
             activity,
@@ -62,10 +88,6 @@ class MapFragment : Fragment() {
                 0
             )
         }
-
-        map = view.findViewById(R.id.map)
-        map.setTileSource(TileSourceFactory.MAPNIK)
-
     }
 
     override fun onPause() {
@@ -78,12 +100,4 @@ class MapFragment : Fragment() {
         map.onResume()
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            MapFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
 }

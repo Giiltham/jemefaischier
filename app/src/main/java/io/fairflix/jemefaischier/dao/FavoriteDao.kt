@@ -12,10 +12,10 @@ interface FavoriteDao {
     fun getAll() : List<Favorite>
 
     @Query("SELECT * FROM favorite WHERE osm_id=:osmId")
-    fun getByOsmId(osmId : Int)
+    fun getByOsmId(osmId : Int) : Favorite
 
     @Insert
-    fun insert(favorite: Favorite)
+    fun create(favorite: Favorite)
 
     @Delete
     fun delete(favorite : Favorite)
