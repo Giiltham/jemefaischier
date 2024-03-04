@@ -11,32 +11,28 @@ import androidx.fragment.app.Fragment
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import android.Manifest
-import android.net.Uri
-import io.fairflix.jemefaischier.api.OverpassApi
+import android.widget.ProgressBar
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.activityViewModels
 import io.fairflix.jemefaischier.databinding.FragmentMapBinding
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
+import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModel
+import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModelFactory
+import kotlinx.coroutines.Job
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.client.engine.cio.*
-import kotlinx.coroutines.runBlocking
+import org.osmdroid.views.CustomZoomButtonsController
 
-//private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MapFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MapFragment : Fragment() {
 
+    private val viewModel: MapFragmentViewModel by activityViewModels() {
+        MapFragmentViewModelFactory(requireActivity().application)
+    }
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var map : MapView
+    private lateinit var errorCard : CardView
+    private lateinit var loadingCircle : ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +41,8 @@ class MapFragment : Fragment() {
     ): View {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         map = binding.map
+        errorCard = binding.errorCard
+        loadingCircle = binding.loadingCircle
         return binding.root
     }
 
@@ -63,11 +61,27 @@ class MapFragment : Fragment() {
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.controller.setZoom(15.0)
         map.controller.setCenter(GeoPoint(45.763420, 4.834277))
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         map.minZoomLevel = (15.0)
         map.maxZoomLevel = (21.0)
+        map.setMultiTouchControls(true)
+
+        addMarkersForAmenityInCity("cafe", "Lyon")
     }
 
-    fun requirePermissionsIfNecessary(){
+    private fun addMarkersForAmenityInCity(amenity : String, city : String) {
+        loadingCircle.visibility = ProgressBar.VISIBLE
+        viewModel.addMarkersForAmenityInCity(map, amenity, city)
+            .invokeOnCompletion { throwable ->
+                loadingCircle.visibility = ProgressBar.INVISIBLE
+
+                if(throwable != null) {
+                    errorCard.visibility = CardView.VISIBLE
+                }
+            }
+    }
+
+    private fun requirePermissionsIfNecessary(){
         val activity = requireActivity()
         val permissionCheckFine = ContextCompat.checkSelfPermission(
             activity,
@@ -100,4 +114,8 @@ class MapFragment : Fragment() {
         map.onResume()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        map.onDetach()
+    }
 }

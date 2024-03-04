@@ -1,5 +1,6 @@
 package io.fairflix.jemefaischier.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,15 +10,15 @@ import io.fairflix.jemefaischier.models.Favorite
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM favorite")
-    fun getAll() : List<Favorite>
+    fun getAll() : LiveData<List<Favorite>>
 
     @Query("SELECT * FROM favorite WHERE osm_id=:osmId")
-    fun getByOsmId(osmId : Int) : Favorite
+    fun getByOsmId(osmId : Long) : LiveData<Favorite?>
 
     @Insert
-    fun create(favorite: Favorite)
+    suspend fun create(favorite: Favorite)
 
-    @Delete
-    fun delete(favorite : Favorite)
+    @Query("DELETE FROM favorite WHERE osm_id=:osmId")
+    suspend fun delete(osmId : Long)
 
 }

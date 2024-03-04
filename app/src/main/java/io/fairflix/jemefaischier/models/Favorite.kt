@@ -2,13 +2,14 @@ package io.fairflix.jemefaischier.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(indices = [Index(value = ["osm_id"], unique = true)])
 data class Favorite(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val uid : Int,
 
     @ColumnInfo(name="osm_id")
-    val osmId : Int,
+    val osmId : Long,
 )

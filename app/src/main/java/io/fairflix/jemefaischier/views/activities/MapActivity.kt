@@ -3,8 +3,10 @@ package io.fairflix.jemefaischier.views.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import io.fairflix.jemefaischier.R
 import io.fairflix.jemefaischier.databinding.MapActivityBinding
 import io.fairflix.jemefaischier.viewmodels.activities.MapActivityViewModel
+import io.fairflix.jemefaischier.views.fragments.MapFragment
 import io.ktor.client.call.body
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
@@ -29,6 +31,12 @@ class MapActivity : AppCompatActivity(){
 
         viewModel = MapActivityViewModel()
 
-        viewModel.cityamenity()
+        binding.map
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as MapFragment
     }
 }

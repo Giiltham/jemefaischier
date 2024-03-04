@@ -12,6 +12,12 @@
         android:name="io.fairflix.jemefaischier.views.fragments.MapFragment"
         android:id="@+id/map"
         />
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="io.fairflix.jemefaischier.views.fragments.ElementDetailFragment"
+        android:id="@+id/elementDetail"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/favoriteBtn"

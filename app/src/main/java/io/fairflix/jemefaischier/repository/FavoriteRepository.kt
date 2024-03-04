@@ -1,9 +1,12 @@
 package io.fairflix.jemefaischier.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import io.fairflix.jemefaischier.dao.FavoriteDao
 import io.fairflix.jemefaischier.db.AppDatabase
 import io.fairflix.jemefaischier.models.Favorite
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class FavoriteRepository constructor(app: Application) {
 
@@ -13,15 +16,20 @@ class FavoriteRepository constructor(app: Application) {
         favoriteDao = AppDatabase.getInstance(app).favoriteDao()
     }
 
-    fun getFavorites() : List<Favorite> {
+    fun getFavorites() : LiveData<List<Favorite>> {
         return favoriteDao.getAll()
     }
 
-    fun addFavorite(favorite : Favorite) {
+    fun getFavorite(id: Long) : LiveData<Favorite?> {
+        return favoriteDao.getByOsmId(id)
+    }
+
+
+    suspend fun addFavorite(favorite : Favorite) {
         favoriteDao.create(favorite)
     }
 
-    fun removeFavorite(favorite: Favorite) {
-        favoriteDao.delete(favorite)
+    suspend fun removeFavorite(id:Long) {
+        favoriteDao.delete(id)
     }
 }
