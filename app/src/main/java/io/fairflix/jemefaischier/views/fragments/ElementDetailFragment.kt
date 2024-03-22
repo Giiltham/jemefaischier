@@ -61,7 +61,6 @@ class ElementDetailFragment : Fragment() {
                 } else {
                     btn.icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorite)
                 }
-
             }
         }
 
@@ -78,12 +77,11 @@ class ElementDetailFragment : Fragment() {
             viewModel.getFavorite(element.id).observeOnce(viewLifecycleOwner) { favorite ->
                 if (favorite == null) {
                     btn.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite, null)
-                    viewModel.addToFavorites(element.id)
-                    println("add")
+                    val favorite = Favorite(0,element.id, binding.title.text.toString())
+                    viewModel.addToFavorites(favorite)
                 } else {
                     btn.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_not_favorite, null)
                     viewModel.removeFromFavorites(element.id)
-                    println("remove")
                 }
 
             }

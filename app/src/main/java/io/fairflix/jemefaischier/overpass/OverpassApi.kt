@@ -26,4 +26,11 @@ object OverpassApi {
         }
         return response
     }
+
+    suspend fun getElementById(osmId: Long) : HttpResponse {
+        val str = "[out:json][timeout:25];\n" +
+                  "node(" + osmId + ");" +
+                  "out;"
+        return makeCall(str)
+    }
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import io.fairflix.jemefaischier.models.Favorite
@@ -33,7 +32,7 @@ class MapFragmentViewModel(app: Application) : ViewModel() {
         return viewModelScope.launch {
             val response = OverpassApi.getAmenityInCity(amenity, city)
 
-            val overpassResponse = Gson().fromJson(response.body<String>(), OverpassResponse::class.java)
+            val overpassResponse : OverpassResponse = Gson().fromJson(response.body<String>(), OverpassResponse::class.java)
             val markers = Utils.createMarkersFromElements(map, overpassResponse.elements)
 
             markers.forEach() { markerElement ->
@@ -48,10 +47,10 @@ class MapFragmentViewModel(app: Application) : ViewModel() {
         }
     }
 
-    fun addToFavorites(id:Long){
+    fun addToFavorites(favorite : Favorite){
         viewModelScope.launch {
             try {
-                favoriteRepository.addFavorite(Favorite(0,id))
+                favoriteRepository.addFavorite(favorite)
             }
             catch (e: Exception) {
                 Log.e(null, "Tried to create a favorite already existing", e)
@@ -73,7 +72,6 @@ class MapFragmentViewModel(app: Application) : ViewModel() {
     fun getFavorite(id: Long) : LiveData<Favorite?>  {
         return favoriteRepository.getFavorite(id)
     }
-
 }
 
 class MapFragmentViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

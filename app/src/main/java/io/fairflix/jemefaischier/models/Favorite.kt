@@ -12,4 +12,7 @@ data class Favorite(
 
     @ColumnInfo(name="osm_id")
     val osmId : Long,
+
+    @ColumnInfo(name="name")
+    val name : String,
 )

@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import io.fairflix.jemefaischier.databinding.FragmentMapBinding
+import io.fairflix.jemefaischier.overpass.Element
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModel
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModelFactory
 import kotlinx.coroutines.Job
@@ -24,7 +25,7 @@ import org.osmdroid.views.CustomZoomButtonsController
 
 class MapFragment : Fragment() {
 
-    private val viewModel: MapFragmentViewModel by activityViewModels() {
+    val viewModel: MapFragmentViewModel by activityViewModels() {
         MapFragmentViewModelFactory(requireActivity().application)
     }
     private var _binding: FragmentMapBinding? = null
@@ -66,19 +67,26 @@ class MapFragment : Fragment() {
         map.maxZoomLevel = (21.0)
         map.setMultiTouchControls(true)
 
-        addMarkersForAmenityInCity("cafe", "Lyon")
+        addMarkersForAmenityInCity("cafe", "Lyon").invokeOnCompletion {
+            // In case we come from the favorites, the markerclicked live data is initialised
+            val clickedLiveData = viewModel.markerClickedLiveData.value
+            if(clickedLiveData != null) {
+              map.controller.animateTo(clickedLiveData.lon!!.toInt(), clickedLiveData.lat!!.toInt())
+            }
+        }
     }
 
-    private fun addMarkersForAmenityInCity(amenity : String, city : String) {
+    private fun addMarkersForAmenityInCity(amenity : String, city : String): Job {
         loadingCircle.visibility = ProgressBar.VISIBLE
-        viewModel.addMarkersForAmenityInCity(map, amenity, city)
-            .invokeOnCompletion { throwable ->
-                loadingCircle.visibility = ProgressBar.INVISIBLE
+        val job = viewModel.addMarkersForAmenityInCity(map, amenity, city)
+        job.invokeOnCompletion { throwable ->
+            loadingCircle.visibility = ProgressBar.INVISIBLE
 
-                if(throwable != null) {
-                    errorCard.visibility = CardView.VISIBLE
-                }
+            if(throwable != null) {
+                errorCard.visibility = CardView.VISIBLE
             }
+        }
+        return job
     }
 
     private fun requirePermissionsIfNecessary(){
@@ -102,6 +110,10 @@ class MapFragment : Fragment() {
                 0
             )
         }
+    }
+
+    fun openMarker(el : Element){
+        viewModel.markerClickedLiveData.postValue(el)
     }
 
     override fun onPause() {

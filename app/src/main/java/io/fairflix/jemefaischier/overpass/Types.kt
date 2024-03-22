@@ -8,7 +8,6 @@ data class OverpassResponse (
     val osm3S: Osm3S,
     val elements: List<Element>
 )
-
 data class Element (
     val type: ElementType,
     val id: Long,
