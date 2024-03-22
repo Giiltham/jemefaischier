@@ -3,7 +3,6 @@ package io.fairflix.jemefaischier.overpass
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.lang.Exception
 
 object Utils {
     fun createMarkersFromElements(map : MapView, elements : List<Element>) : MutableList<MarkerElement>{
@@ -20,7 +19,7 @@ object Utils {
     private fun createMarker(map : MapView, geoPoint : GeoPoint) : Marker {
         val marker = Marker(map)
         marker.position = geoPoint
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         return marker
     }
 

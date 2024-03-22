@@ -1,27 +1,26 @@
 package io.fairflix.jemefaischier.views.fragments
 
+import android.content.Intent
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import io.fairflix.jemefaischier.R
 import io.fairflix.jemefaischier.databinding.FragmentElementDetailBinding
 import io.fairflix.jemefaischier.models.Favorite
-import io.fairflix.jemefaischier.overpass.Element
 import io.fairflix.jemefaischier.utils.observeOnce
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModel
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModelFactory
@@ -48,12 +47,22 @@ class ElementDetailFragment : Fragment() {
         card.visibility = View.INVISIBLE
 
 
-        addActionButton(R.drawable.ic_not_favorite, R.id.favoriteBtn) { btn -> onLoveButtonClicked(btn) }
 
         viewModel.markerClickedLiveData.observe(viewLifecycleOwner) {
+            actionButtons.removeAllViews()
             title.text = it.tags.getOrDefault("name", "Nom introuvable")
             card.visibility = View.VISIBLE
 
+            addActionButton(R.drawable.ic_not_favorite, R.id.favoriteBtn) { btn -> onLoveButtonClicked(btn) }
+
+            if(it.tags.containsKey("website")){
+                addActionButton(R.drawable.website, R.id.websiteBtn) { btn -> onWebsiteButtonClicked(
+                    it.tags["website"]!!) }
+            }
+
+            if(it.tags.containsKey("phone")){
+                addActionButton(R.drawable.phone, R.id.phoneBtn) { btn -> onPhoneButtonClicked(it.tags["phone"]!!) }
+            }
             viewModel.getFavorite(it.id).observeOnce(viewLifecycleOwner) { favorite ->
                 val btn = actionButtons.findViewById<MaterialButton>(R.id.favoriteBtn)
                 if (favorite == null) {
@@ -70,6 +79,17 @@ class ElementDetailFragment : Fragment() {
 
     }
 
+    private fun onWebsiteButtonClicked(website : String){
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setData(Uri.parse(website))
+
+        startActivity(intent)
+    }
+    private fun onPhoneButtonClicked(phone : String){
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.setData(Uri.parse("tel:$phone"))
+        startActivity(intent)
+    }
     private fun onLoveButtonClicked(btn : MaterialButton){
         if(viewModel.markerClickedLiveData.value != null){
             val element = viewModel.markerClickedLiveData.value!!
@@ -95,9 +115,14 @@ class ElementDetailFragment : Fragment() {
         btn.setOnClickListener{
             callback(btn)
         }
+
         val w = (30 * Resources.getSystem().displayMetrics.density).toInt()
         val h = (37 * Resources.getSystem().displayMetrics.density).toInt()
         actionButtons.addView(btn, w,h)
+
+        val params =  LinearLayout.LayoutParams(w, h)
+        params.setMargins(0, 0, 10, 0)
+        btn.layoutParams = params;
     }
 
     override fun onCreateView(

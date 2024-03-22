@@ -35,7 +35,7 @@ class MapFragmentViewModel(app: Application) : ViewModel() {
             val overpassResponse : OverpassResponse = Gson().fromJson(response.body<String>(), OverpassResponse::class.java)
             val markers = Utils.createMarkersFromElements(map, overpassResponse.elements)
 
-            markers.forEach() { markerElement ->
+            markers.forEach { markerElement ->
                 markerElement.marker.setOnMarkerClickListener { marker,map ->
                     markerClickedLiveData.postValue(markerElement.element)
                     false

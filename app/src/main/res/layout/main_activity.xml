@@ -11,7 +11,7 @@
         android:id="@+id/searchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chercher"
+        android:text="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/favoriteBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/favoriteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favoris"
+        android:text="@string/favorites"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/searchBtn"
@@ -34,7 +34,7 @@
         android:paddingBottom="40dp"
         android:textSize="20sp"
         android:textAlignment="center"
-        android:text="Cherchez de nouvelles adresses ou accédez à vos favoris"
+        android:text="@string/main_page_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,17 +52,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Je me fais "
+            android:text="@string/main_page_title_1"
             android:textSize="32sp" />
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="chier"
+            android:text="@string/main_page_title_2"
             android:textColor="#A13030"
             android:textSize="32sp" />
     </LinearLayout>
@@ -72,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="4.56 1.02 9.78"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="10dp" />

@@ -17,23 +17,22 @@
         >
 
         <ProgressBar
-            android:id="@+id/loading_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="invisible"
-
+            android:id="@+id/loadingCircle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         <androidx.cardview.widget.CardView
-            android:id="@+id/error_card"
             android:visibility="invisible"
             android:layout_width="288dp"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:id="@+id/errorCard"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Erreur lors de l'obtention des données"
+                android:text="@string/error_fetching_data"
                 android:textAlignment="center" />
         </androidx.cardview.widget.CardView>
 

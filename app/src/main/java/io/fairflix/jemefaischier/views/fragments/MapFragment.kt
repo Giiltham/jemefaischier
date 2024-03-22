@@ -26,7 +26,7 @@ import org.osmdroid.views.CustomZoomButtonsController
 
 class MapFragment : Fragment() {
 
-    val viewModel: MapFragmentViewModel by activityViewModels() {
+    private val viewModel: MapFragmentViewModel by activityViewModels {
         MapFragmentViewModelFactory(requireActivity().application)
     }
     private var _binding: FragmentMapBinding? = null

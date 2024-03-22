@@ -7,7 +7,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Binding
 import androidx.appcompat.app.AppCompatActivity
 import io.fairflix.jemefaischier.databinding.MainActivityBinding
 import io.fairflix.jemefaischier.viewmodels.activities.MainActivityViewModel

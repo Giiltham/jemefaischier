@@ -12,15 +12,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MapActivityViewModel : ViewModel() {
-    val selectedOsmElement : MutableLiveData<Element>
-
-    init {
-        selectedOsmElement = MutableLiveData()
-    }
+    val selectedOsmElement : MutableLiveData<Element> = MutableLiveData()
 
     fun getOsmElementById(osmId : Long) : Job {
         return viewModelScope.launch {
-            var response = OverpassApi.getElementById(osmId)
+            val response = OverpassApi.getElementById(osmId)
             val overpassResponse = Gson().fromJson(response.body<String>(), OverpassResponse::class.java)
             selectedOsmElement.value = overpassResponse.elements[0]
         }

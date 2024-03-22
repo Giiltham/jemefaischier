@@ -20,7 +20,7 @@ object OverpassApi {
         val client = HttpClient(CIO) {
         }
 
-        val response =  client.request("https://overpass-api.de/api/interpreter",) {
+        val response =  client.request("https://overpass-api.de/api/interpreter") {
             method = HttpMethod.Post
             setBody(body)
         }

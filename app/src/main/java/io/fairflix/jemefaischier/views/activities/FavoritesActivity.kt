@@ -2,6 +2,7 @@ package io.fairflix.jemefaischier.views.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,6 @@ import io.fairflix.jemefaischier.databinding.FavoritesActivityBinding
 import io.fairflix.jemefaischier.models.Favorite
 import io.fairflix.jemefaischier.utils.OnItemClickListener
 import io.fairflix.jemefaischier.utils.OnItemDeleteListener
-import io.fairflix.jemefaischier.utils.observeOnce
 import io.fairflix.jemefaischier.viewmodels.activities.FavoritesActivityViewModel
 
 class FavoritesActivity : AppCompatActivity(), OnItemClickListener<Favorite>, OnItemDeleteListener<Favorite> {
@@ -26,8 +26,15 @@ class FavoritesActivity : AppCompatActivity(), OnItemClickListener<Favorite>, On
         binding.recycler.layoutManager = LinearLayoutManager(application, RecyclerView.VERTICAL, false)
 
         viewModel.favorites.observe(this) { it: List<Favorite> ->
-            val itemAdapter = FavoriteItemAdapter.ItemAdapter(it.toMutableList(), this, this);
-            binding.recycler.adapter = itemAdapter;
+            val itemAdapter = FavoriteItemAdapter.ItemAdapter(it.toMutableList(), this, this)
+            binding.recycler.adapter = itemAdapter
+
+            if(it.isEmpty()){
+                binding.noFavoriteText.visibility = View.VISIBLE
+            }
+            else {
+                binding.noFavoriteText.visibility = View.INVISIBLE
+            }
         }
     }
 

@@ -5,10 +5,8 @@ import androidx.lifecycle.LiveData
 import io.fairflix.jemefaischier.dao.FavoriteDao
 import io.fairflix.jemefaischier.db.AppDatabase
 import io.fairflix.jemefaischier.models.Favorite
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-class FavoriteRepository constructor(app: Application) {
+class FavoriteRepository(app: Application) {
 
     private var favoriteDao : FavoriteDao
 
