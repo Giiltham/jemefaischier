@@ -38,7 +38,6 @@ class MapFragmentViewModel(app: Application) : ViewModel() {
             markers.forEach() { markerElement ->
                 markerElement.marker.setOnMarkerClickListener { marker,map ->
                     markerClickedLiveData.postValue(markerElement.element)
-                    map.controller.animateTo(marker.position)
                     false
                 }
             }

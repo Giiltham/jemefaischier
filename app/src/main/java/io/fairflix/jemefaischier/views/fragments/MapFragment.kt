@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import io.fairflix.jemefaischier.databinding.FragmentMapBinding
 import io.fairflix.jemefaischier.overpass.Element
+import io.fairflix.jemefaischier.overpass.Utils
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModel
 import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModelFactory
 import kotlinx.coroutines.Job
@@ -67,12 +68,10 @@ class MapFragment : Fragment() {
         map.maxZoomLevel = (21.0)
         map.setMultiTouchControls(true)
 
-        addMarkersForAmenityInCity("cafe", "Lyon").invokeOnCompletion {
-            // In case we come from the favorites, the markerclicked live data is initialised
-            val clickedLiveData = viewModel.markerClickedLiveData.value
-            if(clickedLiveData != null) {
-              map.controller.animateTo(clickedLiveData.lon!!.toInt(), clickedLiveData.lat!!.toInt())
-            }
+        addMarkersForAmenityInCity("cafe", "Lyon")
+
+        viewModel.markerClickedLiveData.observeForever {
+            map.controller.animateTo(Utils.getGeoPoint(it))
         }
     }
 

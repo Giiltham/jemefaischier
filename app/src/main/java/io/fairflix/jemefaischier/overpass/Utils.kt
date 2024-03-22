@@ -24,7 +24,7 @@ object Utils {
         return marker
     }
 
-    private fun getGeoPoint(e : Element) : GeoPoint = when (e.type)
+    fun getGeoPoint(e : Element) : GeoPoint = when (e.type)
     {
         ElementType.way -> {
             e.bounds!!.toCoordinates().toGeoPoint()

@@ -68,12 +68,12 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/temperature"
+        android:id="@+id/gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="0°C"
-        android:textSize="20dp"
+        android:text="4.56 1.02 9.78"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="10dp" />
 

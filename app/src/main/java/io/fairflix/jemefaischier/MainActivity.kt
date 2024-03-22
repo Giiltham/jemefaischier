@@ -17,7 +17,7 @@ import io.fairflix.jemefaischier.views.activities.MapActivity
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
-    var temperature: Sensor? = null
+    private var gravity: Sensor? = null
 
     private lateinit var binding : MainActivityBinding
     private lateinit var viewModel : MainActivityViewModel
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        temperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+        gravity = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
 
         viewModel = MainActivityViewModel(application)
@@ -50,7 +50,16 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if(event != null){
-            binding.temperature.text = event.values[0].toString() + "°C"
+
+            fun Float.format(digits: Int) = "%.${digits}f".format(this)
+
+            binding.gravity.text = buildString {
+                append(event.values[0].format(2))
+                append(" ")
+                append(event.values[1].format(2))
+                append(" ")
+                append(event.values[2].format(2))
+            }
         }
     }
 
@@ -61,7 +70,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onResume() {
         // Register a listener for the sensor.
         super.onResume()
-        sensorManager.registerListener(this, temperature, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(this, gravity, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {

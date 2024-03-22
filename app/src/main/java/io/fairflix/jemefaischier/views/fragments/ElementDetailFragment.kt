@@ -29,18 +29,18 @@ import io.fairflix.jemefaischier.viewmodels.fragments.MapFragmentViewModelFactor
 
 class ElementDetailFragment : Fragment() {
 
-    val viewModel: MapFragmentViewModel by activityViewModels {
+    private val viewModel: MapFragmentViewModel by activityViewModels {
         MapFragmentViewModelFactory(requireActivity().application)
     }
 
     private var _binding: FragmentElementDetailBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var card : MaterialCardView
-    lateinit var title : TextView
-    lateinit var description : TextView
-    lateinit var actionButtons : LinearLayout
-    lateinit var closeBtn : ImageButton
+    private lateinit var card : MaterialCardView
+    private lateinit var title : TextView
+    private lateinit var description : TextView
+    private lateinit var actionButtons : LinearLayout
+    private lateinit var closeBtn : ImageButton
 
     override fun onViewCreated(view : View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +70,7 @@ class ElementDetailFragment : Fragment() {
 
     }
 
-    fun onLoveButtonClicked(btn : MaterialButton){
+    private fun onLoveButtonClicked(btn : MaterialButton){
         if(viewModel.markerClickedLiveData.value != null){
             val element = viewModel.markerClickedLiveData.value!!
 
@@ -88,7 +88,7 @@ class ElementDetailFragment : Fragment() {
         }
     }
 
-    fun addActionButton(icon : Int, id : Int, callback: (btn : MaterialButton) -> Unit){
+    private fun addActionButton(icon : Int, id : Int, callback: (btn : MaterialButton) -> Unit){
         val btn = View.inflate(context, R.layout.icon_material_button, null) as MaterialButton
         btn.icon = ResourcesCompat.getDrawable(resources, icon, null)
         btn.id = id
@@ -103,7 +103,7 @@ class ElementDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentElementDetailBinding.inflate(inflater, container, false)
 
         card = binding.card
